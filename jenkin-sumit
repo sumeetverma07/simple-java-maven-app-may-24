@@ -35,8 +35,12 @@ pipeline {
     }
      post { 
         failure { 
-            ech 'failure!'
+            echo 'failure!'
             mail bcc: '', body: '${env.JOB_URL} ', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME} - Build $(env.BUILD_NUMBER)"', to: 'vermasumeet391@gmail.com'
+        }
+         success { 
+            echo 'success!'
+          archiveArtifacts artifacts: '\'*/target/.jar\'', followSymlinks: false, onlyIfSuccessful: true
         }
     }
 }
