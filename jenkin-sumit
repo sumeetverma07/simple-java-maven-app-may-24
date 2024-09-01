@@ -1,17 +1,23 @@
+
 pipeline {
     agent any
-
-    tools{
+    tools {
         maven "mvn"
     }
-
     stages {
         stage('Git Checkout') {
             steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[credentialsId: '977d7a18-2609-4e47-aa5c-eec39507b970', url: 'https://github.com/sumeetverma07/simple-java-maven-app-may-24.git']])
+                checkout scm: [
+                    $class: 'GitSCM',
+                    branches: [[name: '*/master']],
+                    extensions: [],
+                    userRemoteConfigs: [[
+                        credentialsId: '977d7a18-2609-4e47-aa5c-eec39507b970',
+                        url: '(link unavailable)'
+                    ]]
+                ]
             }
         }
-
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
@@ -21,33 +27,48 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-            post { 
-                 always { 
-                junit keepProperties: true, keepTestNames: true, stdioRetention: '', testResults: 'devops-1/target/surefire-reports/TEST-com.mycompany.app.AppTest.xmlTEST-com.mycompany.app.AppTest.xml'
-                    }
-              }
+            post {
+                always {
+                    junit(
+                        keepProperties: true,
+                        keepTestNames: true,
+                        stdioRetention: '',
+                        testResults: 'devops-1/target/surefire-reports/TEST-com.mycompany.app.AppTest.xml'
+                    )
+                }
+            }
         }
         stage('approval') {
             steps {
                 input 'approve deployment to production'
             }
         }
-        
         stage('Deployment') {
             steps {
                 echo 'Deploy on Ec-2'
             }
-
         }
     }
-     post { 
-        failure { 
+    post {
+        failure {
             echo 'failure!'
-            mail bcc: '', body: '${env.JOB_URL} ', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME} - Build $(env.BUILD_NUMBER)"', to: 'vermasumeet391@gmail.com'
+            mail(
+                bcc: '',
+                body: '${env.JOB_URL}',
+                cc: '',
+                from: '',
+                replyTo: '',
+                subject: 'Pipeline Failed: "${env.JOB_NAME} - Build $(env.BUILD_NUMBER)"',
+                to: 'vermasumeet391@gmail.com'
+            )
         }
-         success { 
+        success {
             echo 'success!'
-          archiveArtifacts artifacts: '*/target/.jar', followSymlinks: false, onlyIfSuccessful: true
+            archiveArtifacts(
+                artifacts: '*/target/*.jar',
+                followSymlinks: false,
+                onlyIfSuccessful: true
+            )
         }
     }
 }
