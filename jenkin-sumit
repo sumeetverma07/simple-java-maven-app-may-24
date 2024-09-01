@@ -23,7 +23,7 @@ pipeline {
             }
             post { 
                  always { 
-                junit keepProperties: true, keepTestNames: true, stdioRetention: '', testResults: '**/target/surefire-reports/TEST-com.mycompany.app.AppTest.xmlTEST-com.mycompany.app.AppTest.xml'
+                junit keepProperties: true, keepTestNames: true, stdioRetention: '', testResults: 'devops-1/target/surefire-reports/TEST-com.mycompany.app.AppTest.xmlTEST-com.mycompany.app.AppTest.xml'
                     }
               }
         }
@@ -31,6 +31,12 @@ pipeline {
             steps {
                 echo 'Deploy on Ec-2'
             }
+        }
+    }
+     post { 
+        failure { 
+            ech 'failure!'
+            mail bcc: '', body: '${env.JOB_URL} ', cc: '', from: '', replyTo: '', subject: 'Pipeline Failed: "${env.JOB_NAME} - Build $(env.BUILD_NUMBER)"', to: 'vermasumeet391@gmail.com'
         }
     }
 }
