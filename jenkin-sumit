@@ -40,7 +40,7 @@ pipeline {
         }
          success { 
             echo 'success!'
-          archiveArtifacts artifacts: '\'*/target/.jar\'', followSymlinks: false, onlyIfSuccessful: true
+          archiveArtifacts artifacts: '*/target/.jar', followSymlinks: false, onlyIfSuccessful: true
         }
     }
 }
