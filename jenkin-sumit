@@ -23,7 +23,7 @@ pipeline {
             }
             post { 
                  always { 
-                junit keepProperties: true, keepTestNames: true, stdioRetention: '', testResults: 'devops-1/target/surefire-reports/TEST-com.mycompany.app.AppTest.xmlTEST-com.mycompany.app.AppTest.xml'
+                junit keepProperties: true, keepTestNames: true, stdioRetention: '', testResults: '**/target/surefire-reports/TEST-com.mycompany.app.AppTest.xmlTEST-com.mycompany.app.AppTest.xml'
                     }
               }
         }
