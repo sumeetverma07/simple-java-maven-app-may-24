@@ -1,17 +1,11 @@
 pipeline {
-    agent any
-
+    agent any 
+    
     tools{
         maven "mvn"
     }
 
     stages {
-        stage('Git Checkout') {
-            steps {
-                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/itheroesacademy/simple-java-maven-app.git']])
-            }
-        }
-
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
@@ -21,10 +15,11 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
+           
         }
         stage('Deliver') {
             steps {
-                echo 'Deploy on Ec-2'
+                echo 'pulled form github'
             }
         }
     }
