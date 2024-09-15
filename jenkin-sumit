@@ -22,9 +22,9 @@ pipeline {
                 sh 'mvn test'
             }
 
-        post { 
-            always { 
-                 junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
+            post { 
+                always { 
+                    junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
              }
             }
            
@@ -33,10 +33,10 @@ pipeline {
             steps {
                 echo 'pulled form github'
             }
-        }
-        post { 
-            failure { 
-                mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
+            
+            post { 
+                failure { 
+                    mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
                   }
             }
 
