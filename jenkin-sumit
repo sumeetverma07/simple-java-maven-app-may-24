@@ -27,8 +27,8 @@ pipeline {
                     junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
              }
             }
-           
         }
+        
         stage('Deliver') {
             steps {
                 echo 'pulled form github'
@@ -45,8 +45,6 @@ pipeline {
                     mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
                   }
             }
-
-
         }
     }
 }
