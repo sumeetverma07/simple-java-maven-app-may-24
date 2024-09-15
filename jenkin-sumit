@@ -41,7 +41,7 @@ pipeline {
                 }
                 success { 
                     echo 'success'
-                    mail bcc: '', archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false, onlyIfSuccessful: truebody: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
+                    archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false, onlyIfSuccessful: true
                   }
 
             }
