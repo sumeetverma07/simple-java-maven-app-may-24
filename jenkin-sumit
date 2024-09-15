@@ -33,7 +33,7 @@ pipeline {
             steps {
                 echo 'pulled form github'
             }
-            
+
             post { 
                 failure { 
                     mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
@@ -41,5 +41,6 @@ pipeline {
             }
 
 
+        }
     }
 }
