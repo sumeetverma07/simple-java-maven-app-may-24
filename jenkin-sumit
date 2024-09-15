@@ -28,7 +28,7 @@ pipeline {
              }
             }
         }
-        
+
         stage('Deliver') {
             steps {
                 echo 'pulled form github'
@@ -36,15 +36,14 @@ pipeline {
 
             post { 
                 failure { 
+                    echo 'failure'
                     mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
-                  }
-            }
-
-            post { 
+                }
                 success { 
+                    echo 'success'
                     mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
                   }
-            }
+
         }
     }
 }
