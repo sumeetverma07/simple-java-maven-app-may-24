@@ -40,6 +40,12 @@ pipeline {
                   }
             }
 
+            post { 
+                success { 
+                    mail bcc: '', body: 'hii this is the new project please check the project', cc: '', from: '', replyTo: '', subject: 'my new Devops project ', to: 'vermasumeet391@gmail.com'           
+                  }
+            }
+
 
         }
     }
