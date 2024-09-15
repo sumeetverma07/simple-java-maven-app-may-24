@@ -1,23 +1,17 @@
-
 pipeline {
-    agent any
-    tools {
+    agent any 
+    
+    tools{
         maven "mvn"
     }
+
     stages {
         stage('Git Checkout') {
             steps {
-                checkout scm: [
-                    $class: 'GitSCM',
-                    branches: [[name: '*/master']],
-                    extensions: [],
-                    userRemoteConfigs: [[
-                        credentialsId: '977d7a18-2609-4e47-aa5c-eec39507b970',
-                        url: '(link unavailable)'
-                    ]]
-                ]
-            }
+                checkout scmGit(branches: [[name: '*/master']], extensions: [], userRemoteConfigs: [[url: 'https://github.com/sumeetverma07/simple-java-maven-app-may-24.git']])     
+                }
         }
+
         stage('Build') {
             steps {
                 sh 'mvn -B -DskipTests clean package'
@@ -27,48 +21,18 @@ pipeline {
             steps {
                 sh 'mvn test'
             }
-            post {
-                always {
-                    junit(
-                        keepProperties: true,
-                        keepTestNames: true,
-                        stdioRetention: '',
-                        testResults: 'devops-1/target/surefire-reports/TEST-com.mycompany.app.AppTest.xml'
-                    )
-                }
-            }
-        }
-        stage('approval') {
-            steps {
-                input 'approve deployment to production'
-            }
-        }
-        stage('Deployment') {
-            steps {
-                echo 'Deploy on Ec-2'
-            }
-        }
+
+        post { 
+            always { 
+                 junit stdioRetention: '', testResults: '**/target/surefire-reports/*.xml'
+             }
     }
-    post {
-        failure {
-            echo 'failure!'
-            mail(
-                bcc: '',
-                body: '${env.JOB_URL}',
-                cc: '',
-                from: '',
-                replyTo: '',
-                subject: 'Pipeline Failed: "${env.JOB_NAME} - Build $(env.BUILD_NUMBER)"',
-                to: 'vermasumeet391@gmail.com'
-            )
+           
         }
-        success {
-            echo 'success!'
-            archiveArtifacts(
-                artifacts: '*/target/*.jar',
-                followSymlinks: false,
-                onlyIfSuccessful: true
-            )
+        stage('Deliver') {
+            steps {
+                echo 'pulled form github'
+            }
         }
     }
 }
