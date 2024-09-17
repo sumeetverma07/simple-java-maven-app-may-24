@@ -34,7 +34,7 @@ pipeline {
             steps {
                 input 'Approval for production'
             }
-
+        }    
 
         stage('Deliver') {
             steps {
