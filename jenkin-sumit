@@ -37,11 +37,13 @@ pipeline {
 
         stage('Docker image push to dockerhub') {
             steps {
-                withCredentials([string(credentialsId: 'docker_hub', variable: 'docker_hub')]) {
-                sh 'doker login -u verma00 -p ${docker_hub}'
+              withCredentials([file(credentialsId: '', variable: 'docker-hub')]) {
+                sh 'doker login -u verma00 -p ${docker-hub}'
                 }
+                
             }
-        }    
+        }
+        
 
         stage('Approval') {
             steps {
@@ -67,4 +69,4 @@ pipeline {
                 }
             }
         }
-    }
+}
