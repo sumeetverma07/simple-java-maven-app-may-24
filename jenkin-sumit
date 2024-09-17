@@ -57,7 +57,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                sh 'docker run -d --name java verma00/devops1:latest'
+                sh 'docker run -d  verma00/devops1:latest'
             }
 
             post { 
