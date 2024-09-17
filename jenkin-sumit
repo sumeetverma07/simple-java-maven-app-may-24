@@ -39,6 +39,7 @@ pipeline {
             steps {
                 withCredentials([string(credentialsId: 'verma00', variable: 'Pass')]) {
                 sh 'docker login -u verma00 -p ${Pass}'
+                sh 'docker push verma00/devops1 :latest'
             }           
                 
             }
@@ -69,4 +70,4 @@ pipeline {
                 }
             }
         }
-}
+}                
