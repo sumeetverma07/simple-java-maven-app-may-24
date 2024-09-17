@@ -57,7 +57,7 @@ pipeline {
 
         stage('Deployment') {
             steps {
-                sh 'docker run -itd  verma00/devops1:latest'
+                sh 'docker run -itd  verma00/devops1:latest /bin/bash'
             }
 
             post { 
