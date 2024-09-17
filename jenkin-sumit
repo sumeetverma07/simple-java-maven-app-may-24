@@ -34,7 +34,7 @@ pipeline {
             steps {
                 input 'Approval for production'
             }
-            
+
 
         stage('Deliver') {
             steps {
@@ -51,6 +51,7 @@ pipeline {
                     archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false, onlyIfSuccessful: true
                   }
 
+                }
             }
         }
     }
