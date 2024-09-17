@@ -29,6 +29,13 @@ pipeline {
             }
         }
 
+
+        stage('Approval') {
+            steps {
+                input 'Approval for production'
+            }
+            
+
         stage('Deliver') {
             steps {
                 echo 'pulled form github'
