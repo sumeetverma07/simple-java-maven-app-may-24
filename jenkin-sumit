@@ -29,10 +29,15 @@ pipeline {
             }
         }
 
+        stage('Docker Build') {
+            steps {
+                sh 'Approval for production'
+            }
+        }    
 
         stage('Approval') {
             steps {
-                input 'Approval for production'
+                input 'docker build -t java'
             }
         }    
 
