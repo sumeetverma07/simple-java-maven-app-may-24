@@ -32,6 +32,7 @@ pipeline {
         stage('Docker Build') {
             steps {
                 sh 'docker build -t java .'
+        
             }
         }  
 
@@ -41,7 +42,8 @@ pipeline {
                 sh 'docker login -u verma00 -p ${Pass}'
                 sh 'docker tag java verma00/devops1:latest '
                 sh 'docker push verma00/devops1:latest'
-            }           
+                sh 'docker logout'
+                }           
                 
             }
         }  
@@ -53,9 +55,9 @@ pipeline {
             }
         }    
 
-        stage('Deliver') {
+        stage('Deployment') {
             steps {
-                echo 'pulled form github'
+                sh 'docker run -d --name java verma00/devops1:latest'
             }
 
             post { 
