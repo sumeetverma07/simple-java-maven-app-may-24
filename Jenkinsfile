@@ -1,30 +1,54 @@
+
 pipeline {
-    agent {
-        docker {
-            image 'maven:3.9.0'
-            args '-v /root/.m2:/root/.m2'
-        }
+    agent any
+
+    tools {
+        // Install the Maven version configured as "mvn" and add it to the path.
+        maven "mvn"
     }
+
     stages {
-        stage('Build') {
-            steps {
-                sh 'mvn -B -DskipTests clean package'
+        stage('Git checout') {
+            steps{
+                // Get some code from a GitHub repository
+                git 'https://github.com/sumeetverma07/simple-java-maven-app-may-24.git'
             }
+
+           // post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+              //  success {
+               //     junit '**/target/surefire-reports/TEST-*.xml'
+                 //   archiveArtifacts 'target/*.jar'
+              //  }
+          //  }
         }
-        stage('Test') {
+          stage('Build'){
+            steps{
+                sh 'mvn clean package'
+            }
+          }
+          stage('Approval'){
+            steps{
+                input 'Approve Test to the script'
+            }
+          }
+          stage ('Test'){
             steps {
                 sh 'mvn test'
             }
             post {
-                always {
-                    junit 'target/surefire-reports/*.xml'
+                success{
+                    junit '**/target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false, onlyIfSuccessful: true
                 }
             }
-        }
-        stage('Deliver') {
-            steps {
-                sh './jenkins/scripts/deliver.sh'
+          }
+
+          stage('Deploy'){
+            steps{
+                sh 'echo Deployed'
             }
+          }
         }
     }
-}
