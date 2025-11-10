@@ -1,4 +1,3 @@
-
 pipeline {
     agent any
 
@@ -28,6 +27,24 @@ pipeline {
                 sh 'mvn clean package'
             }
           }
+           stage('Docker Build') {
+            steps {
+                sh 'docker build -t java .'
+        
+            }
+        }  
+
+        stage('Docker push to the dockerhub') {
+            steps {
+                withCredentials([string(credentialsId: 'verma00', variable: 'Pass')]) {
+                sh 'docker login -u verma00 -p ${Pass}'
+                sh 'docker tag java verma00/devops1:latest '
+                sh 'docker push verma00/devops1:latest'
+                sh 'docker logout'
+                }           
+                
+            }
+        }  
           stage('Approval'){
             steps{
                 input 'Approve Test to the script'
