@@ -1,29 +1,72 @@
+
 pipeline {
     agent any
+
     tools {
-        jdk 'Java_21' // Configure JDK 21 in Jenkins
-        maven 'Maven_3' // Configure Maven in Jenkins
+        // Install the Maven version configured as "mvn" and add it to the path.
+        maven "mvn"
     }
+
     stages {
-        stage('Checkout') {
-            steps {
+        stage('Git checout') {
+            steps{
+                // Get some code from a GitHub repository
                 git 'https://github.com/sumeetverma07/simple-java-maven-app-may-24.git'
             }
+
+           // post {
+                // If Maven was able to run the tests, even if some of the test
+                // failed, record the test results and archive the jar file.
+              //  success {
+               //     junit '**/target/surefire-reports/TEST-*.xml'
+                 //   archiveArtifacts 'target/*.jar'
+              //  }
+          //  }
         }
-        stage('Build') {
-            steps {
-                sh 'mvn clean compile'
+          stage('Build'){
+            steps{
+                sh 'mvn clean package'
             }
-        }
-        stage('Test') {
+          }
+           stage('Docker Build') {
+            steps {
+                sh 'docker build -t java .'
+        
+            }
+        }  
+
+        stage('Docker push to the dockerhub') {
+            steps {
+                withCredentials([string(credentialsId: 'verma00', variable: 'Pass')]) {
+                sh 'docker login -u verma00 -p ${Pass}'
+                sh 'docker tag java verma00/devops1:latest '
+                sh 'docker push verma00/devops1:latest'
+                sh 'docker logout'
+                }           
+                
+            }
+        }  
+          stage('Approval'){
+            steps{
+                input 'Approve Test to the script'
+            }
+          }
+          stage ('Test'){
             steps {
                 sh 'mvn test'
             }
-        }
-        stage('Package') {
-            steps {
-                sh 'mvn package'
+            post {
+                success{
+                    junit '**/target/surefire-reports/*.xml'
+                    archiveArtifacts artifacts: '**/target/*.jar', followSymlinks: false, onlyIfSuccessful: true
+                }
             }
+          }
+
+          stage('Deploy'){
+            steps{
+                sh 'echo Deployed'
+            }
+          }
         }
     }
-}
