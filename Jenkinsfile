@@ -36,7 +36,7 @@ pipeline {
 
         stage('Docker push to the dockerhub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub-creds', usernameVariable: 'verma00', passwordVariable: 'verma00')]) {
+                withCredentials([usernamePassword(credentialsId: 'verma00', usernameVariable: 'verma00', passwordVariable: 'verma00')]) {
                 sh 'docker login -u verma00 -p ${Pass}'
                 sh 'docker tag java verma00/devops1:latest '
                 sh 'docker push verma00/devops1:latest'
