@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -36,12 +37,12 @@ pipeline {
 
         stage('Docker push to the dockerhub') {
             steps {
-                withCredentials([usernamePassword(credentialsId: 'dockerhub', usernameVariable: 'verma00', passwordVariable: '123456789')]) {
-                sh 'docker login -u verma00 -p ${Pass}'
+            
+                sh 'docker login -u verma00 -p 123456789'
                 sh 'docker tag java verma00/devops1:latest '
                 sh 'docker push verma00/devops1:latest'
                 sh 'docker logout'
-                }           
+                           
                 
             }
         }  
