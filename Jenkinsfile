@@ -46,11 +46,7 @@ pipeline {
                 
             }
         }  
-          stage('Approval'){
-            steps{
-                input 'Approve Test to the script'
-            }
-          }
+          
           stage ('Test'){
             steps {
                 sh 'mvn test'
